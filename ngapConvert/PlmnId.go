@@ -8,9 +8,9 @@ import (
 	"encoding/hex"
 	"strings"
 
-	"github.com/omec-project/ngap/logger"
-	"github.com/omec-project/ngap/ngapType"
-	"github.com/omec-project/openapi/models"
+	"github.com/5GC-DEV/ngap-cdac/logger"
+	"github.com/5GC-DEV/ngap-cdac/ngapType"
+	"github.com/5GC-DEV/openapi-cdac/models"
 )
 
 func PlmnIdToModels(ngapPlmnId ngapType.PLMNIdentity) (modelsPlmnid models.PlmnId) {

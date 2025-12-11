@@ -5,9 +5,9 @@
 package ngapConvert
 
 import (
+	"github.com/5GC-DEV/ngap-cdac/ngapType"
+	"github.com/5GC-DEV/openapi-cdac/models"
 	"github.com/omec-project/aper"
-	"github.com/omec-project/ngap/ngapType"
-	"github.com/omec-project/openapi/models"
 )
 
 // TS 38.413 9.3.1.85

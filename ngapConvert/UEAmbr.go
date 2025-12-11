@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/omec-project/ngap/logger"
+	"github.com/5GC-DEV/ngap-cdac/logger"
 )
 
 func UEAmbrToInt64(modelAmbr string) int64 {
