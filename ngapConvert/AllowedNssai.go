@@ -5,8 +5,8 @@
 package ngapConvert
 
 import (
-	"github.com/omec-project/ngap/ngapType"
-	"github.com/omec-project/openapi/models"
+	"github.com/5GC-DEV/ngap-cdac/ngapType"
+	"github.com/5GC-DEV/openapi-cdac/models"
 )
 
 func AllowedNssaiToNgap(allowedNssaiModels []models.AllowedSnssai) (allowedNssaiNgap ngapType.AllowedNSSAI) {

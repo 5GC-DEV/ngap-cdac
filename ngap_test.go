@@ -7,9 +7,9 @@ package ngap_test
 import (
 	"testing"
 
+	"github.com/5GC-DEV/ngap-cdac"
+	"github.com/5GC-DEV/ngap-cdac/ngapType"
 	"github.com/omec-project/aper"
-	"github.com/omec-project/ngap"
-	"github.com/omec-project/ngap/ngapType"
 )
 
 // globalRANIDIE for MCC 208, MNC 93

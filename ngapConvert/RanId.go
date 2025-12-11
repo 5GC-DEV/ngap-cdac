@@ -5,9 +5,9 @@
 package ngapConvert
 
 import (
+	"github.com/5GC-DEV/ngap-cdac/ngapType"
+	"github.com/5GC-DEV/openapi-cdac/models"
 	"github.com/omec-project/aper"
-	"github.com/omec-project/ngap/ngapType"
-	"github.com/omec-project/openapi/models"
 )
 
 func RanIdToModels(ranNodeId ngapType.GlobalRANNodeID) (ranId models.GlobalRanNodeId) {

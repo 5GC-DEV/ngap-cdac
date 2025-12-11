@@ -9,8 +9,8 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/5GC-DEV/ngap-cdac/ngapType"
 	"github.com/omec-project/aper"
-	"github.com/omec-project/ngap/ngapType"
 )
 
 // TS 38.412

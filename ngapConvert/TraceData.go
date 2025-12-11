@@ -8,10 +8,10 @@ import (
 	"encoding/hex"
 	"strings"
 
+	"github.com/5GC-DEV/ngap-cdac/logger"
+	"github.com/5GC-DEV/ngap-cdac/ngapType"
+	"github.com/5GC-DEV/openapi-cdac/models"
 	"github.com/omec-project/aper"
-	"github.com/omec-project/ngap/logger"
-	"github.com/omec-project/ngap/ngapType"
-	"github.com/omec-project/openapi/models"
 )
 
 func TraceDataToModels(traceActivation ngapType.TraceActivation) (traceData models.TraceData) {
