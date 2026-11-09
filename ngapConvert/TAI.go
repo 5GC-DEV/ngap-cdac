@@ -8,8 +8,8 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	"github.com/omec-project/ngap/v2/ngapType"
-	"github.com/omec-project/openapi/v2/models"
+	"github.com/5GC-DEV/ngap-cdac/v2/ngapType"
+	"github.com/5GC-DEV/openapi-cdac/v2/models"
 )
 
 func TaiToModels(tai ngapType.TAI) (models.Tai, error) {

@@ -8,10 +8,10 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	"github.com/omec-project/ngap/v2/logger"
-	"github.com/omec-project/ngap/v2/ngapType"
-	"github.com/omec-project/openapi/v2"
-	"github.com/omec-project/openapi/v2/models"
+	"github.com/5GC-DEV/ngap-cdac/v2/logger"
+	"github.com/5GC-DEV/ngap-cdac/v2/ngapType"
+	"github.com/5GC-DEV/openapi-cdac/v2"
+	"github.com/5GC-DEV/openapi-cdac/v2/models"
 )
 
 func SNssaiToModels(ngapSnssai ngapType.SNSSAI) (modelsSnssai models.Snssai, err error) {

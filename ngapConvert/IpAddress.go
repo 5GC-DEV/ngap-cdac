@@ -7,9 +7,9 @@ package ngapConvert
 import (
 	"net"
 
-	"github.com/omec-project/ngap/v2/aper"
-	"github.com/omec-project/ngap/v2/logger"
-	"github.com/omec-project/ngap/v2/ngapType"
+	"github.com/5GC-DEV/ngap-cdac/v2/aper"
+	"github.com/5GC-DEV/ngap-cdac/v2/logger"
+	"github.com/5GC-DEV/ngap-cdac/v2/ngapType"
 )
 
 func IPAddressToString(ipAddr ngapType.TransportLayerAddress) (ipv4Addr, ipv6Addr string) {

@@ -8,11 +8,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/omec-project/ngap/v2/aper"
-	"github.com/omec-project/ngap/v2/logger"
-	"github.com/omec-project/ngap/v2/ngapType"
-	"github.com/omec-project/openapi/v2"
-	"github.com/omec-project/openapi/v2/models"
+	"github.com/5GC-DEV/ngap-cdac/v2/aper"
+	"github.com/5GC-DEV/ngap-cdac/v2/logger"
+	"github.com/5GC-DEV/ngap-cdac/v2/ngapType"
+	"github.com/5GC-DEV/openapi-cdac/v2"
+	"github.com/5GC-DEV/openapi-cdac/v2/models"
 )
 
 func validBitString(bitString aper.BitString, bitLength int) bool {

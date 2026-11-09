@@ -9,7 +9,7 @@ import (
 	"log"
 	"reflect"
 
-	"github.com/omec-project/ngap/v2/logger"
+	"github.com/5GC-DEV/ngap-cdac/v2/logger"
 	"go.uber.org/zap"
 )
 
