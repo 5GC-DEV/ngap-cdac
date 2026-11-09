@@ -6,30 +6,21 @@ package ngapConvert
 
 import (
 	"encoding/hex"
+	"fmt"
 
-	"github.com/5GC-DEV/ngap-cdac/logger"
-	"github.com/5GC-DEV/ngap-cdac/ngapType"
-	"github.com/5GC-DEV/openapi-cdac/models"
+	"github.com/omec-project/ngap/v2/ngapType"
+	"github.com/omec-project/openapi/v2/models"
 )
 
-func TaiToModels(tai ngapType.TAI) models.Tai {
+func TaiToModels(tai ngapType.TAI) (models.Tai, error) {
 	var modelsTai models.Tai
 
-	plmnID := PlmnIdToModels(tai.PLMNIdentity)
-	modelsTai.PlmnId = &plmnID
+	plmnID, err := PlmnIdToModels(tai.PLMNIdentity)
+	if err != nil {
+		return models.Tai{}, fmt.Errorf("invalid TAI PLMN identity: %w", err)
+	}
+	modelsTai.PlmnId = plmnID
 	modelsTai.Tac = hex.EncodeToString(tai.TAC.Value)
 
-	return modelsTai
-}
-
-func TaiToNgap(tai models.Tai) ngapType.TAI {
-	var ngapTai ngapType.TAI
-
-	ngapTai.PLMNIdentity = PlmnIdToNgap(*tai.PlmnId)
-	if tac, err := hex.DecodeString(tai.Tac); err != nil {
-		logger.NgapLog.Warnf("decode TAC failed: %+v", err)
-	} else {
-		ngapTai.TAC.Value = tac
-	}
-	return ngapTai
+	return modelsTai, nil
 }

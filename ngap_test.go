@@ -7,9 +7,9 @@ package ngap_test
 import (
 	"testing"
 
-	"github.com/5GC-DEV/ngap-cdac"
-	"github.com/5GC-DEV/ngap-cdac/ngapType"
-	"github.com/omec-project/aper"
+	"github.com/omec-project/ngap/v2"
+	"github.com/omec-project/ngap/v2/aper"
+	"github.com/omec-project/ngap/v2/ngapType"
 )
 
 // globalRANIDIE for MCC 208, MNC 93
@@ -42,8 +42,8 @@ func TestSimplePDUEncoding(t *testing.T) {
 			ProcedureCode: ngapType.ProcedureCode{Value: ngapType.ProcedureCodeNGSetup},
 			Criticality:   ngapType.Criticality{Value: ngapType.CriticalityPresentReject},
 			Value: ngapType.InitiatingMessageValue{
-				Present: ngapType.InitiatingMessagePresentNGSetupRequest,
-				NGSetupRequest: &ngapType.NGSetupRequest{
+				Present: ngapType.InitiatingMessagePresentNGSetup,
+				NGSetup: &ngapType.NGSetupRequest{
 					ProtocolIEs: ngapType.ProtocolIEContainerNGSetupRequestIEs{
 						List: []ngapType.NGSetupRequestIEs{
 							globalRANIDIE,
@@ -87,7 +87,15 @@ func TestSimplePDUDecoding(t *testing.T) {
 		t.Errorf("Could not decode simple PDU bytes: %v; got error: %v\n", pdu_bytes, err)
 	}
 
-	ie := pdu.InitiatingMessage.Value.NGSetupRequest.ProtocolIEs.List[0]
+	if pdu.InitiatingMessage == nil || pdu.InitiatingMessage.Value.NGSetup == nil {
+		t.Fatalf("Decoded PDU missing NGSetup: %+v", pdu)
+	}
+
+	if len(pdu.InitiatingMessage.Value.NGSetup.ProtocolIEs.List) == 0 {
+		t.Fatalf("Decoded PDU missing ProtocolIEs: %+v", pdu)
+	}
+
+	ie := pdu.InitiatingMessage.Value.NGSetup.ProtocolIEs.List[0]
 	plmn := ie.Value.GlobalRANNodeID.GlobalGNBID.PLMNIdentity.Value
 
 	if len(plmn) != 3 || plmn[0] != 0x02 || plmn[1] != 0xF8 || plmn[2] != 0x39 {

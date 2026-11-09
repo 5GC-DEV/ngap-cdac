@@ -6,27 +6,35 @@ package ngapConvert
 
 import (
 	"encoding/hex"
+	"fmt"
 
-	"github.com/5GC-DEV/ngap-cdac/logger"
-	"github.com/5GC-DEV/ngap-cdac/ngapType"
-	"github.com/5GC-DEV/openapi-cdac/models"
+	"github.com/omec-project/ngap/v2/logger"
+	"github.com/omec-project/ngap/v2/ngapType"
+	"github.com/omec-project/openapi/v2"
+	"github.com/omec-project/openapi/v2/models"
 )
 
-func SNssaiToModels(ngapSnssai ngapType.SNSSAI) (modelsSnssai models.Snssai) {
+func SNssaiToModels(ngapSnssai ngapType.SNSSAI) (modelsSnssai models.Snssai, err error) {
+	if len(ngapSnssai.SST.Value) != 1 {
+		return models.Snssai{}, fmt.Errorf("invalid S-NSSAI SST length %d", len(ngapSnssai.SST.Value))
+	}
 	modelsSnssai.Sst = int32(ngapSnssai.SST.Value[0])
 	if ngapSnssai.SD != nil {
-		modelsSnssai.Sd = hex.EncodeToString(ngapSnssai.SD.Value)
+		if len(ngapSnssai.SD.Value) != 3 {
+			return models.Snssai{}, fmt.Errorf("invalid S-NSSAI SD length %d", len(ngapSnssai.SD.Value))
+		}
+		modelsSnssai.Sd = openapi.PtrString(hex.EncodeToString(ngapSnssai.SD.Value))
 	}
-	return
+	return modelsSnssai, nil
 }
 
 func SNssaiToNgap(modelsSnssai models.Snssai) ngapType.SNSSAI {
 	var ngapSnssai ngapType.SNSSAI
-	ngapSnssai.SST.Value = []byte{byte(modelsSnssai.Sst)}
+	ngapSnssai.SST.Value = []byte{byte(modelsSnssai.GetSst())}
 
-	if modelsSnssai.Sd != "" {
+	if modelsSnssai.GetSd() != "" {
 		ngapSnssai.SD = new(ngapType.SD)
-		if sdTmp, err := hex.DecodeString(modelsSnssai.Sd); err != nil {
+		if sdTmp, err := hex.DecodeString(modelsSnssai.GetSd()); err != nil {
 			logger.NgapLog.Warnf("decode snssai.sd failed: %+v", err)
 		} else {
 			ngapSnssai.SD.Value = sdTmp

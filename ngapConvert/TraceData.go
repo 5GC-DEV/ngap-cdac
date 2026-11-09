@@ -8,16 +8,11 @@ import (
 	"encoding/hex"
 	"strings"
 
-	"github.com/5GC-DEV/ngap-cdac/logger"
-	"github.com/5GC-DEV/ngap-cdac/ngapType"
-	"github.com/5GC-DEV/openapi-cdac/models"
-	"github.com/omec-project/aper"
+	"github.com/omec-project/ngap/v2/aper"
+	"github.com/omec-project/ngap/v2/logger"
+	"github.com/omec-project/ngap/v2/ngapType"
+	"github.com/omec-project/openapi/v2/models"
 )
-
-func TraceDataToModels(traceActivation ngapType.TraceActivation) (traceData models.TraceData) {
-	// TODO: finish this function when need
-	return
-}
 
 func TraceDataToNgap(traceData models.TraceData, trsr string) ngapType.TraceActivation {
 	var traceActivation ngapType.TraceActivation
@@ -57,36 +52,42 @@ func TraceDataToNgap(traceData models.TraceData, trsr string) ngapType.TraceActi
 	nGRANTraceID := append(traceReference, trsrNgap...)
 
 	traceActivation.NGRANTraceID.Value = nGRANTraceID
-
-	// Interfaces To Trace
-	var interfacesToTrace []byte
-	if interfacesToTraceTmp, err := hex.DecodeString(traceData.InterfaceList); err != nil {
-		logger.NgapLog.Warnf("decode Interface failed: %+v", err)
-	} else {
-		interfacesToTrace = interfacesToTraceTmp
-	}
 	traceActivation.InterfacesToTrace.Value = aper.BitString{
-		Bytes:     interfacesToTrace,
+		Bytes:     []byte{0x00},
 		BitLength: 8,
 	}
 
+	// Interfaces To Trace
+	if interfaceList := traceData.GetInterfaceList(); interfaceList != "" {
+		if interfacesToTrace, err := hex.DecodeString(interfaceList); err != nil {
+			logger.NgapLog.Warnf("decode Interface failed: %+v", err)
+		} else if len(interfacesToTrace) != 1 {
+			logger.NgapLog.Warnf("decoded Interface length[%d] is invalid", len(interfacesToTrace))
+		} else {
+			traceActivation.InterfacesToTrace.Value = aper.BitString{
+				Bytes:     interfacesToTrace,
+				BitLength: 8,
+			}
+		}
+	}
+
 	// Trace Collection Entity IP Address
-	ngapIP := IPAddressToNgap(traceData.CollectionEntityIpv4Addr, traceData.CollectionEntityIpv6Addr)
+	ngapIP := IPAddressToNgap(traceData.GetCollectionEntityIpv4Addr(), traceData.GetCollectionEntityIpv6Addr())
 	traceActivation.TraceCollectionEntityIPAddress = ngapIP
 
 	// Trace Depth
-	switch traceData.TraceDepth {
-	case models.TraceDepth_MINIMUM:
+	switch traceData.GetTraceDepth() {
+	case models.TRACEDEPTH_MINIMUM:
 		traceActivation.TraceDepth.Value = ngapType.TraceDepthPresentMinimum
-	case models.TraceDepth_MEDIUM:
+	case models.TRACEDEPTH_MEDIUM:
 		traceActivation.TraceDepth.Value = ngapType.TraceDepthPresentMedium
-	case models.TraceDepth_MAXIMUM:
+	case models.TRACEDEPTH_MAXIMUM:
 		traceActivation.TraceDepth.Value = ngapType.TraceDepthPresentMaximum
-	case models.TraceDepth_MINIMUM_WO_VENDOR_EXTENSION:
+	case models.TRACEDEPTH_MINIMUM_WO_VENDOR_EXTENSION:
 		traceActivation.TraceDepth.Value = ngapType.TraceDepthPresentMinimumWithoutVendorSpecificExtension
-	case models.TraceDepth_MEDIUM_WO_VENDOR_EXTENSION:
+	case models.TRACEDEPTH_MEDIUM_WO_VENDOR_EXTENSION:
 		traceActivation.TraceDepth.Value = ngapType.TraceDepthPresentMediumWithoutVendorSpecificExtension
-	case models.TraceDepth_MAXIMUM_WO_VENDOR_EXTENSION:
+	case models.TRACEDEPTH_MAXIMUM_WO_VENDOR_EXTENSION:
 		traceActivation.TraceDepth.Value = ngapType.TraceDepthPresentMaximumWithoutVendorSpecificExtension
 	}
 
